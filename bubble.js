@@ -1,3 +1,4 @@
+(function(){
 // Stolen from jQuery
 var getElemOffset = function(elem) {
 	var box = elem.getBoundingClientRect(), doc = elem.ownerDocument, body = doc.body, docElem = doc.documentElement,
@@ -6,6 +7,12 @@ var getElemOffset = function(elem) {
 		left = box.left + (docElem.scrollLeft || body.scrollLeft) - clientLeft;
 
 	return { top: top, left: left };
+};
+
+var pointPointDist = function(x1, y1, x2, y2) {
+    var x = x1 - x2;
+    var y = y1 - y2;
+    return Math.sqrt(x*x + y*y);
 };
 
 var pointRectDist = function(x, y, box) {
@@ -24,33 +31,27 @@ var pointRectDist = function(x, y, box) {
     if (vert)
     {
         if (x < box.left) return box.left - x;
-        else return x - box.right
+        else return x - box.right;
     }
 
     // corners
          if (y < box.top && x < box.left) //top left
-        return pointPointDist(box.left, box.top, x, y)
+        return pointPointDist(box.left, box.top, x, y);
     else if (y < box.top && x > box.right) // top right
-        return pointPointDist(box.right, box.top, x, y)
+        return pointPointDist(box.right, box.top, x, y);
     else if (y > box.bottom && x > box.right) // bottom right
-        return pointPointDist(box.right, box.bottom, x, y)
+        return pointPointDist(box.right, box.bottom, x, y);
     else if (y > box.bottom && x < box.left) // bottom left
-        return pointPointDist(box.left, box.bottom, x, y)
+        return pointPointDist(box.left, box.bottom, x, y);
 
     return "ERROR";
-};
-
-var pointPointDist = function(x1, y1, x2, y2) {
-    var x = x1 - x2;
-    var y = y1 - y2;
-    return Math.sqrt(x*x + y*y);
 };
 
 // Setup
 var circ = document.createElement('div');
 var props =  {position: 'absolute', borderRadius: '999px',
     MozBorderRadius: '999px', WebkitBorderRadius: '999px',
-    backgroundColor: 'rgba(128,128,128,0.4)', display: 'none'}
+    backgroundColor: 'rgba(128,128,128,0.4)', display: 'none'};
 for (var prop in props)
 {
     circ.style[prop] = props[prop];
@@ -77,7 +78,7 @@ for (var i = 0; i < as.length; i++)
     };
 
     links.push(link);
-};
+}
 
 var prevClosest = links[0];
 
@@ -126,5 +127,7 @@ document.addEventListener('keypress', function(e){
         showCirc = !showCirc;
         if (!showCirc) circ.style.display = 'none';
         else circ.style.display = 'block';
+        return false;
     }
 }, false);
+})();

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>Bubble cursor example/prototype</title>
+<style type="text/css">
+body {
+	font: 14pt/1.2 Helvetica,Arial,sans-serif;
+}
+
+h1, h2, h3 { font-weight: normal; text-align: center; }
+
+#container {
+	width: 800px;
+	margin: 0 auto;
+}
+
+li {
+	margin: 5px 0;
+}
+
+#bookmarklet {
+	margin-top: -10px;
+	display: block;
+	padding: 20px;
+	width: 200px;
+	height: 200px;
+	margin: 0 auto;
+	background: #529DFF;
+	color: #FFF;
+	text-decoration: none;
+   font-weight: bold;
+
+   border-radius: 999px
+   -moz-border-radius: 999px
+   We: 999px;
+}
+</style>
+</head>
+<body>
+<div id="container">
+<h1>Bubble cursor example/prototype</h1>
+
+<h2><a id="bookmarklet" href="#">Bubble cursor</a></h2>
+<script type="text/javascript">document.getElementById("bookmarklet").href='javascript:var s=document.createElement("script");s.src="'+location.href.replace(/\\/g,'/').replace(/\/[^\/]*\/?$/, '')+'/bubble.min.js";document.body.appendChild(s);void(0);';</script>
+<p>Drag the above bookmarklet to your bookmarks bar (or another tab). Use it on any webpage to see how a bubble cursor works.</p>
+
+<p>The current link will be outlined in blue. Click to follow the link. Press B to see the bubble.</p>
+
+<p>Made as a quick experiment by <a href="http://stuartk.co.uk/">Stuart Knightley</a></p>
+</div>
+</body>
+</html>
