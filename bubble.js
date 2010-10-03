@@ -1,4 +1,12 @@
-$(document).ready(function(){
+// Stolen from jQuery
+var getElemOffset = function(elem) {
+	var box = elem.getBoundingClientRect(), doc = elem.ownerDocument, body = doc.body, docElem = doc.documentElement,
+		clientTop = docElem.clientTop || body.clientTop || 0, clientLeft = docElem.clientLeft || body.clientLeft || 0,
+		top  = box.top  + (docElem.scrollTop  || body.scrollTop ) - clientTop,
+		left = box.left + (docElem.scrollLeft || body.scrollLeft) - clientLeft;
+
+	return { top: top, left: left };
+};
 
 var pointRectDist = function(x, y, box) {
     var hori = (x >= box.left && x <= box.right);
@@ -39,33 +47,41 @@ var pointPointDist = function(x1, y1, x2, y2) {
 };
 
 // Setup
-/*
-[{x:0, y:0, a:<anchor>}]
-*/
-var circ = $('<div>').css({position: 'absolute', borderRadius: '999px',
+var circ = document.createElement('div');
+var props =  {position: 'absolute', borderRadius: '999px',
     MozBorderRadius: '999px', WebkitBorderRadius: '999px',
-    backgroundColor: 'rgba(128,128,128,0.4)', display: 'none'}).appendTo('body');
+    backgroundColor: 'rgba(128,128,128,0.4)', display: 'none'}
+for (var prop in props)
+{
+    circ.style[prop] = props[prop];
+}
+
+document.body.appendChild(circ);
 var showCirc = false;
+
+// [{top:0, left:0, right:0, bottom:0, a:<anchor>}, ...]
 var links = [];
 
-var a = $('a').each(function(){
-    var $this = $(this);
-    var offset = $this.offset();
+var as = document.getElementsByTagName('a');
+for (var i = 0; i < as.length; i++)
+{
+    var a = as[i];
+    var offset = getElemOffset(a);
 
     var link = {
-        a: $this,
+        a: a,
         left: offset.left,
         top: offset.top,
-        right: offset.left+$this.width(),
-        bottom: offset.top+$this.height()
+        right: offset.left+a.offsetWidth,
+        bottom: offset.top+a.offsetHeight
     };
 
     links.push(link);
-});
+};
 
 var prevClosest = links[0];
 
-$(document).mousemove(function(e){
+document.addEventListener('mousemove', function(e){
     var closest;
     var closeDist = 9999;
 
@@ -81,32 +97,34 @@ $(document).mousemove(function(e){
     }
     if (closest !== prevClosest)
     {
-        prevClosest.a.css('outline', '');
-        closest.a.css('outline', '3px solid #529DFF');
+        prevClosest.a.style.outline = '';
+        closest.a.style.outline = '3px solid #529DFF';
         prevClosest = closest;
     }
-    if (showCirc) circ.css({width: closeDist*2+"px", height: closeDist*2+"px",
-        top: e.pageY-closeDist, left: e.pageX-closeDist});
-});
+    if (showCirc)
+    {
+        circ.style.width = closeDist*2+"px";
+        circ.style.height = closeDist*2+"px";
+        circ.style.top = e.pageY-closeDist+"px";
+        circ.style.left = e.pageX-closeDist+"px";
+    }
+}, false);
 
 var clicked = false;
-$(document).click(function(e){
-    console.log("click");
+document.addEventListener('click', function(e){
     if (!clicked)
     {
         //clicked = true;
-        location.href = prevClosest.a.attr('href');
+        location.href = prevClosest.a.href;
     }
-});
+}, false);
 
-$(document).keypress(function(e){
+document.addEventListener('keypress', function(e){
     var code = (e.keyCode ? e.keyCode : e.which);
     if (code == 66 || code == 98)
     {
         showCirc = !showCirc;
-        if (!showCirc) circ.css('display', 'none');
-        else circ.css('display', 'block')
+        if (!showCirc) circ.style.display = 'none';
+        else circ.style.display = 'block';
     }
-});
-
-});
+}, false);
