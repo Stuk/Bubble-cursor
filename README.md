@@ -5,7 +5,7 @@ A bookmarket to add bubble cursor functionality to any website.
 
 Instructions
 ------------
-Drag the bookmarklet from `index.html` (or http://stuartk.co.uk/bubble-cursor/ )
+Drag the bookmarklet from `index.html` (or <http://stuartk.co.uk/bubble-cursor/>)
 to your bookmarks bar or another tab. Use it on any webpage to see how a bubble
 cursor works.
 
